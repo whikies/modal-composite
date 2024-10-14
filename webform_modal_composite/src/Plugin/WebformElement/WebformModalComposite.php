@@ -140,7 +140,7 @@ class WebformModalComposite extends WebformCompositeBase
     public function getConfigurationFormProperties(array &$form, FormStateInterface $form_state)
     {
         /*
-            Dentro de $element_propeties tienn que estar las claves añadidas anteriormente
+            Dentro de $element_propeties tiene que estar las claves añadidas anteriormente
             Extramemos las marcadas con 1 y las añadimos al array de confguraciones webform_fields
 
             Esta configuración siempre la reseteamos al principio y después añadimos los campos marcados con 1
@@ -153,20 +153,23 @@ class WebformModalComposite extends WebformCompositeBase
         return parent::getConfigurationFormProperties($form, $form_state);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function preSave(array &$element, WebformSubmissionInterface $webform_submission)
     {
         $data = $webform_submission->getData();
         $dataModal = $data[$element['#webform_key'] ?? ''];
 
         if (!empty($dataModal['webform_modal_values'])) {
-            $dataModal['webform_modal_values'] = $this->saveSubmissionModalFrom($element, $dataModal['webform_modal_values']);
+            $dataModal['webform_modal_values'] = $this->saveSubmissionModalForm($element, $dataModal['webform_modal_values']);
         } elseif (\is_array($dataModal) && !empty($dataModal)) {
             foreach ($dataModal as $key => $dataItem) {
                 if (!\is_numeric($key)) {
                     continue;
                 }
 
-                $dataItem['webform_modal_values'] = $this->saveSubmissionModalFrom($element, $dataItem['webform_modal_values'] ?? '');
+                $dataItem['webform_modal_values'] = $this->saveSubmissionModalForm($element, $dataItem['webform_modal_values'] ?? '');
                 $dataModal[$key] = $dataItem;
             }
         }
@@ -295,6 +298,13 @@ class WebformModalComposite extends WebformCompositeBase
         }
     }
 
+    /**
+     * Obtiene los valores de los campos seleccionados
+     *
+     * @param array $element
+     * @param string $webformModalValues
+     * @return array
+     */
     private function loadFields(array $element, string $webformModalValues): array
     {
         if (!($values = @\json_decode($webformModalValues, true))) {
@@ -312,7 +322,14 @@ class WebformModalComposite extends WebformCompositeBase
         return $data;
     }
 
-    private function saveSubmissionModalFrom(array $element, string $webformModalValues): string
+    /**
+     * Guarda el submission relacioando con el formulario del modal
+     *
+     * @param array $element
+     * @param string $webformModalValues
+     * @return string
+     */
+    private function saveSubmissionModalForm(array $element, string $webformModalValues): string
     {
         if (!($values = @\json_decode($webformModalValues, true))) {
             return '';

@@ -110,6 +110,7 @@
     Eventos para controlar el modal con un dialog
     =======================================================================*/
 
+    // Cierra el modal
     const closeModal = function (type, dialog) {
         switch (type) {
             case 'dialog':
@@ -288,7 +289,7 @@
 
                     // Cuando se envía el formulario, enviamos los datos para procesarlos y validarlos
                     // Si está todo correcto guardamos los datos seleccionados en el formulario principal
-                    // Y guardamod toda la info en el campo values
+                    // Y guardamos toda la info en el campo webform_modal_values
                     $.ajax({
                         url: process,
                         data,

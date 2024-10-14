@@ -136,6 +136,14 @@ class WebformModalComposite extends WebformCompositeBase
         }
     }
 
+    /**
+     * Configuras las opciones del botón según el tipo seleccionado
+     *
+     * @param array $elements
+     * @param array $element
+     * @param string $type
+     * @return void
+     */
     private static function setButtonOptions(array &$elements, array $element, string $type): void
     {
         $options = [
@@ -192,6 +200,11 @@ class WebformModalComposite extends WebformCompositeBase
         }
     }
 
+    /**
+     * Genera un token único para el campo
+     *
+     * @return string
+     */
     private static function generateToken(): string
     {
         return \rtrim(\strtr(\base64_encode(\random_bytes(32)), '+/', '-_'), '=');
